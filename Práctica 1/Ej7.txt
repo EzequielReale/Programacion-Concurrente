@@ -1,0 +1,7 @@
+Exculsión mutua --> Cumple
+
+Ausencia de deadlock --> Cumple
+
+Ausencia de demora innecesaria --> No cumple porque si SC1, por ejemplo, termina su sección crítica y quiere volver a entrar, pero SC2 no llegó a cambiar el turno, SC1 se va a quedar esperando innecesariamente cuando en realidad debería poder entrar nuevamente.
+
+Eventual entrada --> Cumple

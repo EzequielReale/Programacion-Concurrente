@@ -1,0 +1,15 @@
+La solución funciona pero genera demora innecesaria.
+Al preguntar primero por la cantidad total de usuarios y después por la prioridad puede ocurrir, por ejemplo, que:
+    - Haya 5 personas usando la BD (sem = 1), 4 de prioridad alta (alta = 0) y 1 de prioridad baja (baja = 4)
+    - Ingresa una persona de prioridd alta (sem = 0)
+    - La última persona queda esperando que se libere un cupo de prioridad alta mientras ocupa un cupo del total
+    - Si una persona de prioridad baja intenta entrar (y debería poder porque baja = 4) se va a quedar esperando al semáforo de usuarios totales
+        -Entonces no hay 6 personas usando la BD, hay 5, pero figura como llena
+
+Habría que invertir las sentencias y preguntar 1ro por la prioridad
+
+P(alta)         P(baja)
+P(sem)          P(sem)
+------          -------
+P(sem)          P(sem)
+P(alta)         P(baja)

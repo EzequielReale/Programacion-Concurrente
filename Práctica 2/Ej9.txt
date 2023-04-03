@@ -1,0 +1,21 @@
+No hay exclusión mutua cuando un profesor cambia el estado de esperando a "A" o "B". Esto puede causar que el otro lea esperando e interactue con el alumno al mismo tiempo que el otro.
+
+Solución correcta:
+
+ProfesorA {
+    int idAlumno
+    while (true) {
+        P(llegoA)
+        P(mutexA)
+        idAlumno = pop(colaA)
+        V(mutexA)
+        If (estado[idAlumno] == “Esperando”) {
+            P(mutex); //******** nótese que tiene que ser un semáforo mutex para ambos profesores por igual porque no modifica nada suyo, sino del alumno
+            estado[idAlumno] = “A”
+            V(mutex) //*********
+            V(esperando[idAlumno])
+            //Se toma el examen//
+            V(esperando[idAlumno])
+        }
+    }
+}
