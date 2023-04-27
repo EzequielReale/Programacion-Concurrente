@@ -12,7 +12,7 @@ Nota: maximizar la concurrencia.
 monitor Enfermera {
     
     procedure hablarConEnfermera(medico: out int, gravedad: out int) {
-        medico = asignarMedico(0, 5);
+        medico = asignarMedico(0, 4);
         gravedad = asignarGravedad(1, 10);
     }
 }
