@@ -17,7 +17,7 @@ a las personas y a los coordinadores; todos los procesos deben terminar.
 */
 
 sem mutex[4] = ([4] , 1), barrera[4] = ([4] = 0), llegaronTodos[4] = ([4] , 0), termine[4] = ([4] , 0), esperaNota[100] = ([100] , 0);
-queue entregas[4]; 
+queue entregas[4], examenes[4]; 
 int notas[100], cantLlegaron[4] = ([4] , 0);
 
 process Alumno [id: 0 to 99] {
@@ -29,7 +29,9 @@ process Alumno [id: 0 to 99] {
     V(mutex[idC]);
     P(barrera[idC]);
 
-    text examen = recibirExamen();
+    P(mutex[idC]);
+    pop(examenes[idC], examen);
+    V(mutex[idC]);
     realizarExamen(examen);
     delay(60 minutos);
 
@@ -49,8 +51,10 @@ process Coordinador [id: 0 to 3] {
     
     P(llegaronTodos[id]);
     for i = 0 to 24 {
+        P(mutex[id])
+        push(examenes[id], examen);
+        V(mutex[id]);
         V(barrera[id]);
-        darExamen(examen);
     }
 
     for i = 0 to 24 {

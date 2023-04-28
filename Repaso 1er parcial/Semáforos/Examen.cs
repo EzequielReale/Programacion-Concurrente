@@ -14,7 +14,7 @@ todos los procesos deben terminar.
 
 sem mutex[3] = ([3] , 1), llegaronTodos[3] = ([3] , 0), iniciar[3] = ([3] , 0), termine[3] = ([3] , 0), esperarNota[60] = ([60] , 0);
 int llegaron[3] = ([3] , 0), notas[60];
-queue entregas[3];
+queue entregas[3], examenes[3];
 
 process Alumno [id: 0 to 59] {
     int aula = asignarAula();
@@ -26,13 +26,16 @@ process Alumno [id: 0 to 59] {
     V(mutex[aula]);
 
     P(iniciar[aula]);
-    examen = recibirExamen();
+    P(mutex[aula]);
+    pop(examenes[aula]);
+    V(mutex[aula]);
     examen = realizarExamen();
 
     P(mutex[aula]);
     push(entregas[aula], id, examen)
     V(mutex[aula]);
     V(termine[aula]);
+    
     P(esperarNota[id]);
     int miNota = notas[id];
 }
@@ -43,8 +46,10 @@ process Profesor [id: 0 to 2] {
 
     P(llegaronTodos[id]);
     for i = 0 to 19 {
-        V(iniciar)[aula];
-        entregarExamen(examen);
+        P(mutex[id]);
+        push(examenes[id], examen);
+        V(mutex[id]);
+        V(iniciar)[i];
     } 
 
     for i = 0 to 19 {
@@ -53,6 +58,7 @@ process Profesor [id: 0 to 2] {
         P(mutex[id]);
         pop(entregas[id], alumno, examen);
         V(mutex[id]);
+        
         nota = corregirExamen(examen);
         notas[alumno] = nota;
         V(esperarNota[alumno]);

@@ -4,7 +4,7 @@ empleados que forman 4 equipos de trabajo (cada empleado conoce a
 priori a que equipo pertenece). La empresa tiene 4 combis para
 trasladar cada equipo a la planta de trabajo que le corresponda.
 Cada empleado al llegar sube a la combi que le corresponde a su
-equipo, cuando las 4 combis están completas cada una de ellas
+equipo, cuando las 4 combis están 0completas cada una de ellas
 parte a la planta correspondiente. El traslado dura un tiempo
 aleatorio entre 5 y 20 minutos. Al llegar a su sector cada empleado
 realiza su trabajo y luego se retira de la planta (cada empleado
@@ -18,21 +18,13 @@ monitor Combi [id: 0 to 3] {
     int aBordo = 0, listos = 0;
     cond todasCompletas, llegamos;
 
-    procedure subir() {
+    procedure subirYViajar() {
         aBordo++;
         if (aBordo < 10) wait(todasCompletas);
         else {
             Salida.esperarInicio();
+            delay(random(5, 20) minutos); //viaje de la combi
             signal_all(todasCompletas);
-        }
-    }
-
-    procedure viajar() {
-        listos++;
-        if (listos < 10) wait(llegamos);
-        else {
-            delay(random(5, 20) minutos);
-            signal_all(llegamos);
         }
     }
 }
@@ -51,8 +43,7 @@ monitor Salida {
 
 process Empleado [id: 0 to 39] {
     int equipo = getEquipo();
-    Combi[equipo].subir();
-    Combi[equipo].viajar();
+    Combi[equipo].subirYViajar();
     delay(8 horas) //trabaja
     //se retira
 }
