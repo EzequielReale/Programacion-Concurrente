@@ -30,7 +30,7 @@ monitor Resultado [id: 0 to 4] {
     }
 }
 
-monitor Maximo {
+monitor Maximo { //No lo pide el ejercicio, es una complejidad extra que le agregué
     
     int termineNro = 0, puntajeMasAlto = -1;
     cond terminado;
