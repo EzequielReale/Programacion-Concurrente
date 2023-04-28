@@ -20,7 +20,7 @@ la elaboración de una unidad de un producto.
 */
 
 sem mutexCola = 1, mutexUnidades[3] = ([3], 1], numeroLeido = 0, esperaLlegada[30] = ([30] , 0), hayEmpleado = 0, terminaronTodos = 0, esperarIrse = 0;
-int idGrupo = 0, unidadesRealizadasEmpleado[30], unidadesRealizadasGrupo[3] = ([3] , 0), finJornada = 0;
+int idGrupo = 0, unidadesRealizadasEmpleado[30] = ([30] , 0]), unidadesRealizadasGrupo[3] = ([3] , 0), finJornada = 0;
 queue empleados;
 
 process Empleado [id: 0 to 29] {
