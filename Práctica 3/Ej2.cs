@@ -90,24 +90,18 @@ process Persona [id: 0 to N-1] {
 
 monitor Fotocopiadora {
 
-    int siguiente = 0, esperando = 0;
+    int siguiente = 0;
     cond cola[N];
 
     procedure entrarAFotocopiar(id: in int) {
-        if (siguiente != id) {
-           esperando++;
-           wait cola[id]; 
-        } 
+        if (siguiente != id) wait cola[id]; 
     }
 
-    procedure salir() {
-        esperando--;
-        if (esperando > 0) {
-            if (siguiente < N-1) siguiente++;
-            else siguiente = 0;
-
-            signal cola[siguiente];
-        } 
+    procedure salir() {        
+        if (siguiente < N-1) siguiente++;
+        else siguiente = 0;
+        
+        signal cola[siguiente]; 
     }
 }
 
@@ -159,4 +153,54 @@ process Persona [id: 0 to N-1] {
 // f) Modificar la solución (e) para el caso en que sean 10 fotocopiadoras. El empleado le
 // indica a la persona cuando puede usar una fotocopiadora, y cual debe usar.
 
-//In process
+monitor Fotocopiadora {
+
+    cond terminado, cola, llegoCliente, terminado;
+    bool impresorasLibres[10] = ([10] , true);
+    int esperando = 0, idImpresora;
+
+
+    procedure pedirEntrar(idImp: out int) {
+        esperando++;
+        signal(llegoCliente);
+        wait(cola);
+        idImp = idImpresora;
+    }
+
+    procedure permitirAcceso() {
+        int i = 0;
+        
+        if (esperando == 0) wait(llegoCliente);
+        esperando--;
+        
+        while (impresorasLibres[i] == false) {
+            i++;
+            if (i == 10) {
+                i = 0;
+                wait(terminado);
+            }
+        }
+        idImpresora = i;
+        impresorasLibres[i] = false;
+
+        signal(cola);
+    }
+
+    procedure salir(idImp: in int) {
+        impresorasLibres[idImp] = true;
+        signal(terminado);
+    }
+}
+
+
+process Empleado {
+    while (true) Fotocopiadora.permitirAcceso();
+}
+
+process Persona [id: 0 to N-1] {
+    int idImp;
+
+    Fotocopiadora.pedirEntrar(idImp);
+    Fotocopiar();
+    Fotocopiadora.salir(idImp);
+}
