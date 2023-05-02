@@ -118,7 +118,6 @@ monitor Fotocopiadora {
 
     cond cola, llegoCliente, terminado;
     int esperando = 0;
-    bool empleadoListo = false;
 
     procedure pedirEntrar() {
         esperando++;
