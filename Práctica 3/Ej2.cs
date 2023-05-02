@@ -30,8 +30,8 @@ monitor Fotocopiadora {
     }
 
     procedure salir() {
-        esperando--;
         if (esperando > 0) {
+            esperando--;
             signal(cola);
         }
         else libre = true;
@@ -67,8 +67,8 @@ monitor Fotocopiadora {
     procedure salir() {
         int id;
         
-        esperando--;
         if (esperando > 0) {
+            esperando--;
             pop(fila, id);
             signal(cola[id]);
         }
@@ -126,9 +126,7 @@ monitor Fotocopiadora {
     }
 
     procedure permitirAcceso() {
-        if (esperando == 0) {
-            wait(llegoCliente);
-        }
+        if (esperando == 0) wait(llegoCliente);
         esperando--;
         signal(cola);
         wait(terminado);
