@@ -33,8 +33,11 @@ monitor Expendedora {
 
     procedure Proximo() {
         botellas--;
-        esperando--;
-        if (esperando > 0) signal(cola);
+        
+        if (esperando > 0) {
+            signal(cola);
+            esperando--;
+        }
         else libre = true;
     }
 
