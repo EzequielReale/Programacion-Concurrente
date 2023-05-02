@@ -31,7 +31,7 @@ monitor Fila [id: 0 to 4] {
     procedure siguiente() {
         int idP, gravedad;
         
-        if (length(cola) == 0) wait(hayPaciente);
+        if (empty(cola)) wait(hayPaciente);
         pop(cola, idP, gravedad);
         signal(turno[idP]);
     }
