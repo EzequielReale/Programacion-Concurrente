@@ -11,8 +11,8 @@ process Admin {
     queue buffer;
     text web;
 
-    do Robot?sitioEncontrado(web) -> push(buffer, web);
-    □ not empty(buffer); Analizador?disponible() -> Analizador!sitioParaAnalizar(pop(buffer));
+    do Robot[*]?sitioEncontrado(web) -> push(buffer, web);
+    □  not empty(buffer); Analizador?disponible() -> Analizador!sitioParaAnalizar(pop(buffer));
     od
 }
 
