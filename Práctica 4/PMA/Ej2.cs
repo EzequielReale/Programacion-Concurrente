@@ -9,9 +9,9 @@ process Persona[id: 0 to P-1] {
     receive nroCaja[id](miCaja);
 
     send cola[miCaja](id);
-    recieve turno[id]();
+    receive turno[id]();
     //Lo atienden
-    recieve comprobante[id](comp);
+    receive comprobante[id](comp);
     
     send termine(miCaja);
     send pedido("me voy");
@@ -22,7 +22,7 @@ process Caja[id: 0 to 4] {
     text comp;
 
     while (true) {
-        recieve cola[id](idP);
+        receive cola[id](idP);
         send turno[idP]();
         //Atiende
         send comprobante[idP](comp);

@@ -5,7 +5,7 @@ process Cliente[id: 0 to C-1] {
     Comida comida;
 
     send pedidos(id, miPedido);
-    recieve entregaComida(comida);
+    receive entregaComida(comida);
 }
 
 process Coordinador {
@@ -13,8 +13,8 @@ process Coordinador {
     text pedidoC;
 
     while (true) {
-        recieve disponibleParaComandas(idV);
-        if (!empty(pedidos)) recieve pedidos(idC, pedidoC);
+        receive disponibleParaComandas(idV);
+        if (!empty(pedidos)) receive pedidos(idC, pedidoC);
         else {
             pedidoC = "";
             idC = -1;
@@ -29,7 +29,7 @@ process Vendedor[id: 0 to 2]{
 
     while (true) {
         send disponibleParaComandas(id);
-        recieve pedidos(idC, pedidoC);
+        receive pedidos(idC, pedidoC);
 
         if (idc == -1) {
             //repone las bebidas
@@ -45,7 +45,7 @@ process Cocinero[id: 0 to 1] {
     Comida comida;
 
     while (true) {
-        recieve pedidoCocina(idC, pedidoC);
+        receive pedidoCocina(idC, pedidoC);
         comida = cocinar(pedidoC);
         send entregaComida[idC](comida);
     }
