@@ -1,8 +1,9 @@
-chan paraImprimir(Document), pedido(), imprimirUsuario(Document), imprimirDirector(Document);
+chan paraImprimir(Document), pedido(), pedidoImpresora(), imprimirUsuario(Document), imprimirDirector(Document);
 
 process Impresora [id: 0 to 2] {
     Document doc;
     while (true) {
+        send pedidoImpresora();
         receive paraImprimir(doc);
         Imprimir(doc);   
     }
@@ -28,12 +29,14 @@ process Coordinador {
     Document doc;
     while (true) {
         receive pedido();
+        receive pedidoImpresora();
+        
         if (!empty(imprimirDirector)) {
             receive imprimirDirector(doc);
-            send paraImprimir(doc);
         } else if (!empty(imprimirUsuario)) {
             receive imprimirUsuario(doc);
-            send paraImprimir(doc);
         }
+        
+        send paraImprimir(doc);
     }
 }
