@@ -88,4 +88,7 @@ procedure Ej3 is
         Central.recibirTimeout();
     end Contador;
 
+
+begin
+    null;
 end Ej3;

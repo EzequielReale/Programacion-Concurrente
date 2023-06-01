@@ -22,13 +22,13 @@ procedure Ej4 is
     task type Paciente;
 
     task Medico is
-        entry atenderEnfermera(p: in-out text);
+        entry atenderEnfermera(p: out text);
         entry atenderPaciente();
     end Medico;
 
     task Mesa is
-        entry dejarNota(p: in-out text);
-        entry recibirNota(p: in-out text);
+        entry dejarNota(p: in text);
+        entry recibirNota(p: out text);
     end Mesa;
 
     enfermeras: array(1..E) of Enfermera;
@@ -65,7 +65,6 @@ procedure Ej4 is
 
 
     task body Medico is
-        papel: text;
     begin
         loop
             select
@@ -75,12 +74,12 @@ procedure Ej4 is
             or
                 when (atenderPaciente´count = 0) =>
                     select
-                        accept atenderEnfermera(papel: in-out text) do
-                            firmarPapel(papel);
+                        accept atenderEnfermera(papel: out text) do
+                            papel := firmarPapel(papel);
                         end atenderEnfermera;
                     else
                         Mesa.recibirNota(papel) do
-                            firmarPapel(papel);
+                            papel := firmarPapel(papel);
                         end recibirNota;
                     end select;
             end select;
@@ -93,15 +92,18 @@ procedure Ej4 is
     begin
         loop
             select
-                accept dejarNota(p: in-out text) do
-                    notas.push(p);
+                accept dejarNota(papel: in text) do
+                    notas.push(papel);
                 end dejarNota;
             or
-                accept recibirNota(p: in-out text) do
-                    p := notas.pop();
+                accept recibirNota(papel: out text) do
+                    papel := notas.pop();
                 end recibirNota;
             end select;
         end loop;
     end Mesa;
 
+
+begin
+    null;
 end Ej4;

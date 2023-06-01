@@ -34,4 +34,7 @@ procedure Ej2 is
         end loop;
     end Empleado;
 
+
+begin
+    null;
 end Ej2;

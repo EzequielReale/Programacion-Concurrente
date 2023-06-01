@@ -84,6 +84,9 @@ procedure Ej1A is
         end loop;
     end Puente;
 
+
+begin
+    null;
 end Ej1A;
 
 //B) Modifique la solución para que tengan mayor prioridad los camiones que el resto de los vehículos
@@ -167,4 +170,7 @@ procedure Ej1B is
         end loop;
     end Puente;
 
+
+begin
+    null;
 end Ej1B;
