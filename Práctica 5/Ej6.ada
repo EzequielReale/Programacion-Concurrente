@@ -64,7 +64,7 @@ procedure Ej6 is
 
 
     task body Persona is
-        id, idE: Integer;
+        id, idE, idGanador: Integer;
         monedas: queue of Double;
     begin
         idE := getEquipo();
@@ -83,26 +83,26 @@ procedure Ej6 is
         equipos(idE).sumarMonedas(monedas);
 
         accept ganador(idG: in Integer) do
-            if (idG = idE) then
-                print("Ganamos!");
-            else
-                print("Perdimos :(");
-            end if;
+            idGanador := idG;
         end ganador;
     end Persona;
 
 
     task body Referi is
         maxMonto: Double := -1;
-        maxId: Integer;
+        montoActual: Double;
+        maxId, idAct: Integer;
     begin
         for i := 1..4 loop
             accept totalMonedas(monto: in Double, id: in Integer) do
-                if (monto > maxMonto) then
-                    maxMonto := monto;
-                    maxId := id;
-                end if;
+                montoActual := monto;
+                idAct := id;
             end totalMonedas;
+            
+            if (montoActual > maxMonto) then
+                maxMonto := montoActual;
+                maxId := idAct;
+            end if;
         end loop;
 
         for i := 1..20 loop
