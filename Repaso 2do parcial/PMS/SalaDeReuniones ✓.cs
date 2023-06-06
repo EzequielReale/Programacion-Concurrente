@@ -27,15 +27,15 @@ process SalaDeReuniones {
     do  Cliente[*]?Encolar(idC, tipo) ->
             if (tipo == "habitual") push(colaHabituales, idC);
             else push(colaTemporales, idC);
-    □   libre && !(empty(colaHabituales)) ; Cliente[*]Pedido() ->
+    □   (libre && (!empty(colaHabituales))) ; Cliente[*]?Pedido() ->
             pop(colaHabituales, idC);
             Cliente[idC]!Usar();
             libre = false;
-    □   libre && (!(empty(colaTemporales)) && (empty(colaHabituales))) ; Cliente[*]Pedido() ->
+    □   (libre && (!empty(colaTemporales)) && (empty(colaHabituales))) ; Cliente[*]?Pedido() ->
             pop(colaTemporales, idC);
             Cliente[idC]!Usar();
             libre = false;
-    □   Cliente[*]Liberar ->
+    □   Cliente[*]?Liberar ->
             libre = true;
     od
 }
